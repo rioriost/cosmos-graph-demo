@@ -37,7 +37,7 @@ def insert_vertices(client):
     with open('air-routes-latest-nodes.csv', newline='') as f:
         reader = csv.reader(f)
         for row in reader:
-            query = "g.addV('airport').property('id', row[0]).property('code', row[3]).property('icao', row[4]).property('desc', row[5])"
+            query = "g.addV('airport').property('id', '{0}').property('code', '{1}').property('icao', '{2}').property('desc', \"{3}\").property('pk', 'pk')".format(row[0], row[3], row[4], row[5])
             print("\n> {0}\n".format(query))
             callback = client.submitAsync(query)
             if callback.result() is not None:
@@ -56,7 +56,7 @@ def insert_edges(client):
     with open('air-routes-latest-edges.csv', newline='') as f:
         reader = csv.reader(f)
         for row in reader:
-            query = "g.V(row[1]).addE('line').to(g.V(row[2]))"
+            query = "g.V('{0}').addE('line').to(g.V('{1}'))".format(row[1], row[2])
             print("\n> {0}\n".format(query))
             callback = client.submitAsync(query)
             if callback.result() is not None:
